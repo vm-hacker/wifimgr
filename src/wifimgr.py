@@ -6,7 +6,7 @@
 # 
 
 import getpass,os,sys,socket
-import disable,enable,list_wifi
+import disable,enable
 
 class wifi:             
     def unblock():
@@ -22,7 +22,8 @@ class wifi:
     
     def list_wifi():
         ifnames = os.listdir('/sys/class/net/')
-        wireless = ifnames[1]
+        print(ifnames)
+        wireless = input("Enter your wireless interface (usually begins with wl): ")
         print("Wifi networks detected on " + wireless)
         if __name__ == "__main__":
             for i in range(1):
