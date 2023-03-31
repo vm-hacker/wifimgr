@@ -40,12 +40,10 @@ class Wifi:
     @staticmethod
     def connect():
         ifnames = os.listdir("/sys/class/net/")
-        wireless = ifnames[1]
-        os.system(f"nmcli d wifi list ifname {wireless}")
+        wireless = input(f"Enter your wireless interface (one of {ifnames}): ")
         ssid = input("Please choose a network to connect to: ")
         password = getpass.getpass()
-        os.system(f"nmcli d wifi connect {ssid} password {password} ifname {wireless}")
-
+        os.system(f"nmcli d wifi connect '{ssid}' password '{password}' ifname {wireless}")
 
 class Ip:
     @staticmethod
