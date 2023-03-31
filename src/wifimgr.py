@@ -6,6 +6,21 @@ import disable
 import enable
 
 
+def help():
+    print("""
+wifimgr - a command line utility for managing wifi networks
+
+Usage:
+    help - display this help menu
+    list - list available wifi networks in a given wireless interface
+    connect - connect to a wifi network using a wireless interface
+    unblock - unblock wifi if blocked by rfkill
+    enable - enable wireless interface
+    disable - disable wireless interface
+    ip-public - print your public IP address
+    clear - clear the console screen
+    exit - exit wifimgr""")
+
 class Wifi:
     @staticmethod
     def unblock():
