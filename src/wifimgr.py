@@ -1,161 +1,73 @@
-#!/usr/bin/python
+import getpass
+import os
+import socket
 
-#
-# (C) Copyright 2022 Venkatesh Mishra
-# Wifimgr v0.1.1 released on 23 February 2022
-# 
+import disable
+import enable
 
-import getpass,os,sys,socket
-import disable,enable
 
-class wifi:             
+class Wifi:
+    @staticmethod
     def unblock():
-        if __name__ == "__main__":
-            try:
-                for i in range(1):
-                    os.system("rfkill unblock wifi")
-            except:
-                for i in range(1):
-                    print("Error when unblocking wifi")
-        else:
-            pass
-    
+        try:
+            os.system("rfkill unblock wifi")
+        except Exception:
+            print("Error when unblocking wifi")
+
+    @staticmethod
     def list_wifi():
-        ifnames = os.listdir('/sys/class/net/')
+        ifnames = os.listdir("/sys/class/net/")
         print(ifnames)
         wireless = input("Enter your wireless interface (usually begins with wl): ")
-        print("Wifi networks detected on " + wireless)
-        if __name__ == "__main__":
-            for i in range(1):
-                os.system("nmcli d wifi list ifname " + wireless)
-        else:
-            pass
+        print(f"Wifi networks detected on {wireless}")
+        os.system(f"nmcli d wifi list ifname {wireless}")
 
+    @staticmethod
     def connect():
-        ifnames = os.listdir('/sys/class/net/')
+        ifnames = os.listdir("/sys/class/net/")
         wireless = ifnames[1]
-        for i in range(1):
-            os.system("nmcli d wifi list ifname " + wireless)
+        os.system(f"nmcli d wifi list ifname {wireless}")
         ssid = input("Please choose a network to connect to: ")
-        for i in range(1):
-            password = getpass.getpass()
-        for i in range(1):
-            if __name__ == "__main__":
-                for i in range(1):
-                    os.system("nmcli d wifi connect " + ssid + " password " + password + " ifname " + wireless)
-            else:
-                pass
-    
+        password = getpass.getpass()
+        os.system(f"nmcli d wifi connect {ssid} password {password} ifname {wireless}")
 
-class ip:
+
+class Ip:
+    @staticmethod
     def print_public_ip():
-        if __name__ == "__main__":
-            try:
-                for i in range(1):
-                    os.system("curl 'https://api.ipify.org'")
-            except:
-                pass
-        else:
+        try:
+            os.system("curl 'https://api.ipify.org'")
+        except Exception:
             pass
-    
+
+    @staticmethod
     def hostname():
         hostname = socket.gethostname()
-        if __name__ == "__main__":
-            print(hostname)
-        else:
-            pass
+        print(hostname)
+
 
 def core():
+    commands = {
+        "help": help,
+        "list": Wifi.list_wifi,
+        "connect": Wifi.connect,
+        "exit": exit,
+        "clear": lambda: os.system("clear"),
+        "enable": enable.enable,
+        "disable": disable.disable,
+        "ip-public": Ip.print_public_ip,
+        "unblock": Wifi.unblock,
+    }
+
     command = input("[wifimgr]$ ")
 
-    if(command == "help"):
-        print("""
-            wifimgr - a command line utility for managing wifi networks
-            
-            usage:\n
-                list - list available wifi networks in a given wirless interface
-                connect - connect to a wifi network using a wirless inteface
-                unblock - unblock wifi if blocked by rfkill
-                enable - enable wirless interface
-                disable - disable wireless interface
-                ip-public - print your public ip adress
-                exit - exit wifimgr
-        """)
-
-    elif(command == "list"):
-        if __name__ == "__main__":
-            for i in range(1):
-               wifi.list_wifi()
-        else:
-            pass
-
-    elif(command == "connect"):
-        if __name__ == "__main__":
-            for i in range(1):
-               wifi.connect()
-        else:
-            pass
-
-    elif(command == "exit"):
-        for i in range(1):
-            if __name__ == "__main__":
-                sys.exit()
-            else:
-                pass
-
-    elif(command == "clear"):
-        for i in range(1):
-            if __name__ == "__main__":
-                try:
-                    for i in range(1):
-                        os.system("clear")
-                except:
-                    for i in range(1):
-                        print("Error when clearing console")
-            else:
-                pass
-
-    elif(command == "enable"):
-        if __name__ == "__main__":
-            for i in range(1):
-                enable.enable()
-
-    elif(command == "disable"):
-        if __name__ == "__main__":
-            for i in range(1):
-                disable.disable()
-        else:
-            pass
-    
-    elif(command == "ip-public"):
-        if __name__ == "__main__":
-            for i in range(1):
-                ip.print_public_ip()
-        else:
-            pass
-
-    elif(command == "unblock"):
-        if __name__ == "__main__":
-            for i in range(1):
-                try:
-                    for i in range(1):
-                        wifi.unblock()
-                except:
-                    for i in range(1):
-                        if __name__ == "__main__":
-                            for i in range(1):
-                                print("Error when unblocking wirless interface")
-                        else:
-                            pass
-        else:
-            pass
-
-    else:
+    try:
+        commands[command]()
+    except KeyError:
         pass
+
 
 # Run main code
 if __name__ == "__main__":
     while True:
         core()
-else:
-    pass
